@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<title>jQuery卷轴效果</title>
+<style type="text/css">
+ /*通用样式*/
+body,ul,li,p,h1,h2,h3,h4,h5{
+    margin:0;
+    padding:0;
+    font-size:100%;
+}
+body{
+    font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', SimSun, 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+}
+button,input,select,textarea{
+    font-family: inherit;
+    font-size: 100%;
+    margin: 0;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration:none;
+    color:#000;
+    background: transparent;
+}
+a:focus{
+    outline: none;
+}
+img{
+    border:0;
+}
+
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+/*content*/
+.content-open{
+    position: relative;
+    margin:0 auto;
+    width: 1200px;
+    
+}
+.l-pic-index{
+	/*display:none;*/
+    position: absolute;
+    left: 567px;
+    top: 0;
+    z-index:2;
+    width:33px;
+    height:413px;
+    background: url("images/j1.jpg") no-repeat right 0;
+}
+.r-pic-index{
+	/*display:none;*/
+    position: absolute;
+    right: 546px;
+    top: 0;
+    z-index: 2;
+    width:54px;
+    *width:82px;
+    height:413px;
+    background: url("images/j4.jpg") no-repeat left 0;
+}
+.l-bg-index{
+    position: absolute;
+    top: 0px;
+    left: 567px;
+    z-index: 1;
+    width: 33px;
+    height: 413px;
+    background: url("images/j2.jpg") right 0 no-repeat;
+}
+.r-bg-index{
+    position: absolute;
+    top:0px;
+    right: 546px;
+    z-index: 1;
+    width: 54px;
+    height: 413px;
+    background: url("images/j3.jpg") 0 0 no-repeat;
+}
+
+.opposite .l-pic-index{
+	background: url("images/side-b1.jpg") 0 0 no-repeat;
+}
+
+.opposite .r-pic-index{
+	background: url("images/side-b4.jpg") 0 0 no-repeat;
+}
+
+.opposite .l-bg-index{
+	background: url("images/side-b2.jpg") 0 0 no-repeat;
+}
+
+.opposite .r-bg-index{
+	background: url("images/side-b3.jpg") 0 0 no-repeat;
+}
+.autoopen{ 
+	width: 1200px;
+	height: 413px;
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.open-btn{
+	height: 60px;
+	text-align: center;
+}
+.open-btn a{
+	display: inline-block;
+	width: 146px;
+	height: 50px;
+	border: 5px solid #ddd;
+	border-radius: 5px;
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.35);
+	margin: 0 10px;
+}
+.open-btn .active{
+	border: 5px solid #f5a423;
+}
+.big-pic{
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	bottom: -140px;
+	right:50px;
+	overflow: hidden;
+	border-radius: 50%;
+	z-index: 2;
+	border: 5px solid #ddd;
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.35);
+	display: none;
+}
+.big-pic img{
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.autoopen .mark{
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	z-index: 2;
+	display: none;
+	background: rgba(0,0,0,0.5);
+}
+ </style>
+ 
+</head>
+<body>
+
+<div class="content-open">
+	<div class="face autoopen">
+		<div class="l-pic-index"><!-- --></div>
+		<div class="r-pic-index"><!-- --></div>
+		<div class="l-bg-index"><!-- --></div>
+		<div class="r-bg-index"><!-- --></div>
+		<div class="mark"><!-- --></div>
+	</div>
+	
+	<div class="opposite autoopen" style="display: none;">
+		<div class="l-pic-index"><!-- --></div>
+		<div class="r-pic-index"><!-- --></div>
+		<div class="l-bg-index"><!-- --></div>
+		<div class="r-bg-index"><!-- --></div>
+		<div class="mark"><!-- --></div>
+	</div>
+	
+	<div class="open-btn">
+		<a href="javascript:" class="active"><img src="images/face-btn.jpg" /></a>
+		<a href="javascript:"><img src="images/sideb-btn.jpg" /></a>	
+	</div>
+	
+	<div class="big-pic">
+		<div pic-box>
+			<img src="images/A.jpg" />
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+ $(document).ready(function(){
+        //卷轴展开效果
+        autoopen();
+        fnMove();
+        
+        $('.open-btn a').click(function(){
+        	$(".autoopen .mark").fadeOut(400);
+        	$(".big-pic").fadeOut(400);
+        	$(".big-pic img").css({'top':0,'right':0});
+        	$(".autoopen .mark").css({'right':0,'top':0});
+        	$('.autoopen').css('display','none');        	
+        	$('.autoopen').eq($(this).index()).css('display','block');
+        	$(".l-pic-index").css('left',567);
+        	$(".r-pic-index").css('right',546);
+        	$(".l-bg-index").css({'width':33,'left':567});
+        	$(".r-bg-index").css({'width':54,'right':546});
+        	$('.open-btn a').attr('class','');
+        	$(this).attr('class','active');
+        	autoopen();
+        	fnMove();
+        });
+        function autoopen(){
+	        $(".l-pic-index").animate({'left':'0','top':'0'},3000);
+	        $(".r-pic-index").animate({'right':'0','top':'0'},3000);
+	        $(".l-bg-index").animate({'width':'538px','left':'33px'},3000);
+	        $(".r-bg-index").animate({'width':'575px','right':'54px'},3000,function(){
+	        	$(".autoopen .mark").fadeIn(800);
+	        	$(".autoopen .mark").css({'right':0,'top':0});
+	        	$(".big-pic").fadeIn(800);
+	        	
+          });
+        	
+        };
+        
+        function fnMove(){
+        	$(".autoopen").mousemove(function(ev){
+	        		var ev=event||ev;
+	        		var oT=$(this).offset().top+$(this).parents().offset().top;
+	        		var oL=$(this).offset().left+$(this).parents().offset().left;
+	        		var MoveT=ev.pageY-oT-$('.autoopen .mark').height()/2;
+	        		if(MoveT<0){
+	        			MoveT=0;
+	        		}else if(MoveT >$(this).height()-$('.autoopen .mark').height()){
+	        			MoveT=$(this).height()-$('.autoopen .mark').height();
+	        		}
+	        		var MoveL=ev.pageX-oL+$('.autoopen .mark').width()/2;
+	        		if(MoveL<0){
+	        			MoveL=0;
+	        		}else if(MoveL> $(this).width()-$('.autoopen .mark').width()){
+	        			MoveL=$(this).width()-$('.autoopen .mark').width();
+	        		}
+	        		var scaleX=$(".autoopen .mark").offset().left/$(this).width();
+	        		var scaleY=$(".autoopen .mark").offset().top/$(this).height();
+	        		var picL=-scaleX*$('.big-pic img').width()+$('.autoopen .mark').width()/2+122;
+	        		var picT=-scaleY*$('.big-pic img').height()-$('.autoopen .mark').height()/2+22;
+	        		$('.big-pic img').css({'top':picT,'left':picL});
+	        		
+	        		$(".autoopen .mark").css({'top':MoveT,'left':MoveL});
+	        	});
+        }
+        
+          
+    });
+</script>
+
+</body>
+</html>
