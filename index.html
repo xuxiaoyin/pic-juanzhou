@@ -192,8 +192,8 @@ img{
 	</div>
 	
 	<div class="big-pic">
-		<div pic-box>
-			<img src="images/A.jpg" />
+		<div class="pic-box">
+			<img src="images/A-big.jpg" />
 		</div>
 	</div>
 </div>
@@ -201,62 +201,65 @@ img{
 <script type="text/javascript">
  $(document).ready(function(){
         //卷轴展开效果
-        autoopen();
-        fnMove();
-        
+        autoopen(0);
+        fnMove(0);
+        var _src=['images/A-big.jpg','images/B-big.jpg'];
         $('.open-btn a').click(function(){
-        	$(".autoopen .mark").fadeOut(400);
+        	var _index=$(this).index()
+        	$(".autoopen .mark").eq(_index).fadeOut(400);
+        	$(".big-pic img").attr('src',_src[_index]);
         	$(".big-pic").fadeOut(400);
         	$(".big-pic img").css({'top':0,'right':0});
-        	$(".autoopen .mark").css({'right':0,'top':0});
+        	$(".autoopen .mark").eq(_index).css({'right':0,'top':0});
         	$('.autoopen').css('display','none');        	
-        	$('.autoopen').eq($(this).index()).css('display','block');
+        	$('.autoopen').eq(_index).css('display','block');
         	$(".l-pic-index").css('left',567);
         	$(".r-pic-index").css('right',546);
         	$(".l-bg-index").css({'width':33,'left':567});
         	$(".r-bg-index").css({'width':54,'right':546});
         	$('.open-btn a').attr('class','');
         	$(this).attr('class','active');
-        	autoopen();
-        	fnMove();
+        	autoopen(_index);
+        	fnMove(_index);
         });
-        function autoopen(){
+        function autoopen(num){
 	        $(".l-pic-index").animate({'left':'0','top':'0'},3000);
 	        $(".r-pic-index").animate({'right':'0','top':'0'},3000);
 	        $(".l-bg-index").animate({'width':'538px','left':'33px'},3000);
 	        $(".r-bg-index").animate({'width':'575px','right':'54px'},3000,function(){
-	        	$(".autoopen .mark").fadeIn(800);
-	        	$(".autoopen .mark").css({'right':0,'top':0});
+	        	$(".autoopen .mark").eq(num).fadeIn(800);
+	        	$(".autoopen .mark").eq(num).css({'right':0,'top':0});
 	        	$(".big-pic").fadeIn(800);
 	        	
           });
         	
         };
         
-        function fnMove(){
+        function fnMove(num){
         	$(".autoopen").mousemove(function(ev){
 	        		var ev=event||ev;
 	        		var oT=$(this).offset().top+$(this).parents().offset().top;
 	        		var oL=$(this).offset().left+$(this).parents().offset().left;
-	        		var MoveT=ev.pageY-oT-$('.autoopen .mark').height()/2;
+	        		var MoveT=ev.pageY-oT-$('.autoopen .mark').eq(num).height()/2;
 	        		if(MoveT<0){
 	        			MoveT=0;
-	        		}else if(MoveT >$(this).height()-$('.autoopen .mark').height()){
-	        			MoveT=$(this).height()-$('.autoopen .mark').height();
+	        		}else if(MoveT >$(this).height()-$('.autoopen .mark').eq(num).height()){
+	        			MoveT=$(this).height()-$('.autoopen .mark').eq(num).height();
 	        		}
-	        		var MoveL=ev.pageX-oL+$('.autoopen .mark').width()/2;
+	        		var MoveL=ev.pageX-oL+$('.autoopen .mark').eq(num).width()/2;
 	        		if(MoveL<0){
 	        			MoveL=0;
-	        		}else if(MoveL> $(this).width()-$('.autoopen .mark').width()){
-	        			MoveL=$(this).width()-$('.autoopen .mark').width();
+	        		}else if(MoveL> $(this).width()-$('.autoopen .mark').eq(num).width()){
+	        			MoveL=$(this).width()-$('.autoopen .mark').eq(num).width();
 	        		}
-	        		var scaleX=$(".autoopen .mark").offset().left/$(this).width();
-	        		var scaleY=$(".autoopen .mark").offset().top/$(this).height();
-	        		var picL=-scaleX*$('.big-pic img').width()+$('.autoopen .mark').width()/2+122;
-	        		var picT=-scaleY*$('.big-pic img').height()-$('.autoopen .mark').height()/2+22;
-	        		$('.big-pic img').css({'top':picT,'left':picL});
-	        		
-	        		$(".autoopen .mark").css({'top':MoveT,'left':MoveL});
+	        		var scaleX=$(".autoopen .mark").eq(num).offset().left/$(this).width();
+	        		var scaleY=$(".autoopen .mark").eq(num).offset().top/$(this).height();
+	        		var picL=-scaleX*$('.big-pic img').width()+$('.autoopen .mark').eq(num).width()/2+122;
+	        		var picT=-scaleY*$('.big-pic img').height()-$('.autoopen .mark').eq(num).height()/2+22;
+	        		console.log(picL)
+	        		console.log(picT)
+	        		$('.big-pic img').css({'top':picT,'left':picL});	        		
+	        		$(".autoopen .mark").eq(num).css({'top':MoveT,'left':MoveL});
 	        	});
         }
         
