@@ -203,6 +203,8 @@ img{
         //卷轴展开效果
         autoopen(0);
         fnMove(0);
+        var HT=($(window).height()-$('.content-open').height())/2;
+        $('.content-open').css('top',HT);
         var _src=['images/A-big.jpg','images/B-big.jpg'];
         $('.open-btn a').click(function(){
         	var _index=$(this).index()
@@ -238,32 +240,32 @@ img{
         function fnMove(num){
         	$(".autoopen").mousemove(function(ev){
 	        		var ev=event||ev;
-	        		var oT=$(this).offset().top+$(this).parents().offset().top;
-	        		var oL=$(this).offset().left+$(this).parents().offset().left;
-	        		var MoveT=ev.pageY-oT-$('.autoopen .mark').eq(num).height()/2;
-	        		if(MoveT<0){
-	        			MoveT=0;
-	        		}else if(MoveT >$(this).height()-$('.autoopen .mark').eq(num).height()){
-	        			MoveT=$(this).height()-$('.autoopen .mark').eq(num).height();
+	        		var oT=ev.pageY-$(this).offset().top-$('.autoopen .mark').eq(num).height()/2;
+	        		var oL=ev.pageX-$(this).offset().left-$('.autoopen .mark').eq(num).width()/2;
+	        		if(oT<0){
+	        			oT=0;
+	        		}else if(oT >$(this).height()-$('.autoopen .mark').eq(num).height()){
+	        			oT=$(this).height()-$('.autoopen .mark').eq(num).height();
 	        		}
-	        		var MoveL=ev.pageX-oL+$('.autoopen .mark').eq(num).width()/2;
-	        		if(MoveL<0){
-	        			MoveL=0;
-	        		}else if(MoveL> $(this).width()-$('.autoopen .mark').eq(num).width()){
-	        			MoveL=$(this).width()-$('.autoopen .mark').eq(num).width();
+	        		if(oL<0){
+	        			oL=0;
+	        		}else if(oL> $(this).width()-$('.autoopen .mark').eq(num).width()){
+	        			oL=$(this).width()-$('.autoopen .mark').eq(num).width();
 	        		}
-	        		var scaleX=$(".autoopen .mark").eq(num).offset().left/$(this).width();
-	        		var scaleY=$(".autoopen .mark").eq(num).offset().top/$(this).height();
-	        		var picL=-scaleX*$('.big-pic img').width()+$('.autoopen .mark').eq(num).width()/2+122;
-	        		var picT=-scaleY*$('.big-pic img').height()-$('.autoopen .mark').eq(num).height()/2+22;
-	        		console.log(picL)
-	        		console.log(picT)
+	        		$(".autoopen .mark").eq(num).css({'top':oT,'left':oL});
+	        		var scaleX=oL/($(".autoopen").width()-$(".autoopen .mark").width());
+					var scaleY=oT/($(".autoopen").height()-$(".autoopen .mark").height());
+					
+	        		var picL=-scaleX*($('.big-pic img').width()-$('.autoopen .mark').eq(num).width());
+	        		var picT=-scaleY*($('.big-pic img').height()-$('.autoopen .mark').eq(num).height());
 	        		$('.big-pic img').css({'top':picT,'left':picL});	        		
-	        		$(".autoopen .mark").eq(num).css({'top':MoveT,'left':MoveL});
+	        		
 	        	});
         }
         
           
+          
+        
     });
 </script>
 
