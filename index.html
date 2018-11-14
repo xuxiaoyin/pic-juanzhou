@@ -60,50 +60,46 @@ img{
 .l-pic-index{
 	/*display:none;*/
     position: absolute;
-    left: 567px;
-    top: 0;
+    left: 553px;
+    top: -47px;
     z-index:2;
-    width:33px;
-    height:413px;
-    background: url("images/j1.jpg") no-repeat right 0;
+    width:47px;
+    height:507px;
+    background: url("images/left-l.png") no-repeat right 0;
 }
 .r-pic-index{
 	/*display:none;*/
     position: absolute;
-    right: 546px;
-    top: 0;
+    right: 553px;
+    top: -47px;
     z-index: 2;
-    width:54px;
+    width:47px;
     *width:82px;
-    height:413px;
-    background: url("images/j4.jpg") no-repeat left 0;
+    height:507px;
+    background: url("images/right-r.png") no-repeat left 0;
 }
 .l-bg-index{
     position: absolute;
     top: 0px;
-    left: 567px;
+    left: 600px;
     z-index: 1;
-    width: 33px;
+    width: 47px;
     height: 413px;
+    overflow: hidden;
     background: url("images/j2.jpg") right 0 no-repeat;
 }
 .r-bg-index{
     position: absolute;
     top:0px;
-    right: 546px;
+    right: 600px;
     z-index: 1;
-    width: 54px;
+    width: 47px;
     height: 413px;
+    overflow: hidden;
     background: url("images/j3.jpg") 0 0 no-repeat;
 }
 
-.opposite .l-pic-index{
-	background: url("images/side-b1.jpg") 0 0 no-repeat;
-}
 
-.opposite .r-pic-index{
-	background: url("images/side-b4.jpg") 0 0 no-repeat;
-}
 
 .opposite .l-bg-index{
 	background: url("images/side-b2.jpg") 0 0 no-repeat;
@@ -191,6 +187,7 @@ img{
 		<a href="javascript:"><img src="images/sideb-btn.jpg" /></a>	
 	</div>
 	
+
 	<div class="big-pic">
 		<div class="pic-box">
 			<img src="images/A-big.jpg" />
@@ -201,6 +198,8 @@ img{
 <script type="text/javascript">
  $(document).ready(function(){
         //卷轴展开效果
+        
+
         autoopen(0);
         fnMove(0);
         var HT=($(window).height()-$('.content-open').height())/2;
@@ -215,20 +214,20 @@ img{
         	$(".autoopen .mark").eq(_index).css({'right':0,'top':0});
         	$('.autoopen').css('display','none');        	
         	$('.autoopen').eq(_index).css('display','block');
-        	$(".l-pic-index").css('left',567);
-        	$(".r-pic-index").css('right',546);
-        	$(".l-bg-index").css({'width':33,'left':567});
-        	$(".r-bg-index").css({'width':54,'right':546});
+        	$(".l-pic-index").css('left',553);
+        	$(".r-pic-index").css('right',553);
+        	$(".l-bg-index").css({'width':47,'left':600});
+        	$(".r-bg-index").css({'width':47,'right':600});
         	$('.open-btn a').attr('class','');
         	$(this).attr('class','active');
         	autoopen(_index);
         	fnMove(_index);
         });
         function autoopen(num){
-	        $(".l-pic-index").animate({'left':'0','top':'0'},3000);
-	        $(".r-pic-index").animate({'right':'0','top':'0'},3000);
-	        $(".l-bg-index").animate({'width':'538px','left':'33px'},3000);
-	        $(".r-bg-index").animate({'width':'575px','right':'54px'},3000,function(){
+	        $(".l-pic-index").animate({'left':'-27px','top':'-47px'},3100);
+	        $(".r-pic-index").animate({'right':'-27px','top':'-47px'},3100);
+	        $(".l-bg-index").animate({'width':'600px','left':'0'},3000);
+	        $(".r-bg-index").animate({'width':'600px','right':'0'},3000,function(){
 	        	$(".autoopen .mark").eq(num).fadeIn(800);
 	        	$(".autoopen .mark").eq(num).css({'right':0,'top':0});
 	        	$(".big-pic").fadeIn(800);
@@ -239,7 +238,7 @@ img{
         
         function fnMove(num){
         	$(".autoopen").mousemove(function(ev){
-	        		var ev=event||ev;
+	        		var ev=ev||event;
 	        		var oT=ev.pageY-$(this).offset().top-$('.autoopen .mark').eq(num).height()/2;
 	        		var oL=ev.pageX-$(this).offset().left-$('.autoopen .mark').eq(num).width()/2;
 	        		if(oT<0){
