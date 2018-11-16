@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<title>jQuery卷轴效果</title>
+<style type="text/css">
+ /*通用样式*/
+body,ul,li,p,h1,h2,h3,h4,h5{
+    margin:0;
+    padding:0;
+    font-size:100%;
+}
+body{
+    font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', SimSun, 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+}
+button,input,select,textarea{
+    font-family: inherit;
+    font-size: 100%;
+    margin: 0;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration:none;
+    color:#000;
+    background: transparent;
+}
+a:focus{
+    outline: none;
+}
+img{
+    border:0;
+}
+
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+/*content*/
+.content-open{
+    position: relative;
+    margin:0 auto;
+    width: 1200px;
+    
+}
+.l-pic-index{
+	/*display:none;*/
+    position: absolute;
+    z-index: 99999;
+    left: 553px;
+    top: -47px;
+    z-index:2;
+    width:47px;
+    height:507px;
+    background: url("images/left-l.png") no-repeat right 0;
+}
+.r-pic-index{
+	/*display:none;*/
+    position: absolute;
+    z-index: 99999;
+    right: 553px;
+    top: -47px;
+    z-index: 2;
+    width:47px;
+    *width:82px;
+    height:507px;
+    background: url("images/right-r.png") no-repeat left 0;
+}
+.l-bg-index{
+    position: absolute;
+    top: 0px;
+    left: 600px;
+    z-index: 1;
+    width: 47px;
+    height: 413px;
+    overflow: hidden;
+    background: url("images/j2.jpg") right 0 no-repeat;
+}
+.r-bg-index{
+    position: absolute;
+    top:0px;
+    right: 600px;
+    z-index: 1;
+    width: 47px;
+    height: 413px;
+    overflow: hidden;
+    background: url("images/j3.jpg") 0 0 no-repeat;
+}
+
+
+
+.opposite .l-bg-index{
+	background: url("images/side-b2.jpg") 0 0 no-repeat;
+}
+
+.opposite .r-bg-index{
+	background: url("images/side-b3.jpg") 0 0 no-repeat;
+}
+.autoopen{ 
+	width: 1200px;
+	height: 413px;
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.open-btn{
+	height: 60px;
+	text-align: center;
+}
+.open-btn a{
+	display: inline-block;
+	width: 146px;
+	height: 50px;
+	border: 5px solid #ddd;
+	border-radius: 5px;
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.35);
+	margin: 0 10px;
+}
+.open-btn .active{
+	border: 5px solid #f5a423;
+}
+
+.webpage{
+	/* Contains the webpage screenshot */
+	width:1200px;
+	height:413px;
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+.retina{
+	/* The Retina effect */
+	border:2px solid white;
+
+	/* Positioned absolutely, so we can move it around */
+	position:absolute;
+	height:180px;
+	width:180px;
+
+	/* Hidden by default */
+	display:none;
+
+	/* A blank cursor, notice the default fallback */
+	cursor:url('images/blank.cur'),default;
+	
+	/* CSS3 Box Shadow */
+	-moz-box-shadow:0 0 5px #777, 0 0 10px #aaa inset;
+	-webkit-box-shadow:0 0 5px #777;
+	box-shadow:0 0 5px #777, 0 0 10px #aaa inset;
+	
+	/* CSS3 rounded corners */
+	-moz-border-radius:90px;
+	-webkit-border-radius:90px;
+	border-radius:90px;
+}
+
+#retina0{
+	background:url('images/A-big.jpg') no-repeat center center white;
+}
+
+#retina1{
+	background:url('images/B-big.jpg') no-repeat center center white;
+}
+
+.retina.chrome{
+	/* A special chrome version of the cursor */
+	cursor:url('img/blank_google_chrome.cur'),default;
+}
+
+
+ </style>
+ 
+</head>
+<body>
+
+<div class="content-open">
+	<div class="face autoopen">
+		<div class="l-pic-index" style="z-index: 999;"><!-- --></div>
+		<div class="r-pic-index" style="z-index: 999;"><!-- --></div>
+		<div class="l-bg-index"><!-- --></div>
+		<div class="r-bg-index"><!-- --></div>
+		<div id="webpage0" class="webpage" style="opacity: 0; z-index: 2;">
+			<img src="images/A-small.jpg" width="1200" height="413" alt="Web Page"/>
+        	<div id="retina0" class="retina"><!-- --></div>
+        </div>
+	</div>
+	
+	<div class="opposite autoopen" style="display: none;">
+		<div class="l-pic-index"><!-- --></div>
+		<div class="r-pic-index"><!-- --></div>
+		<div class="l-bg-index"><!-- --></div>
+		<div class="r-bg-index"><!-- --></div>
+		<div id="webpage1" class="webpage" style="opacity: 0; z-index: 2;">
+			<img src="images/B-small.jpg" width="1200" height="413" alt="Web Page"/>
+        	<div id="retina1" class="retina"><!-- --></div>
+        </div>
+	</div>
+	
+	<div class="open-btn">
+		<a href="javascript:" class="active"><img src="images/face-btn.jpg" /></a>
+		<a href="javascript:"><img src="images/sideb-btn.jpg" /></a>	
+	</div>
+	
+
+</div>
+
+<script type="text/javascript">
+ $(document).ready(function(){
+        //卷轴展开效果
+        autoopen(0);
+        var HT=($(window).height()-$('.content-open').height())/2;
+        $('.content-open').css('top',HT);
+        var _src=['images/A-big.jpg','images/B-big.jpg'];
+        $('.open-btn a').click(function(){
+        	$('.autoopen').children().stop();
+        	var _index=$(this).index();
+        	$('.webpage').css('opacity',0);
+        	$('.autoopen').css('display','none');        	
+        	$('.autoopen').eq(_index).css('display','block');
+        	$(".l-pic-index").css('left',553);
+        	$(".r-pic-index").css('right',553);
+        	$(".l-bg-index").css({'width':47,'left':600});
+        	$(".r-bg-index").css({'width':47,'right':600});
+        	$('.open-btn a').attr('class','');
+        	$(this).attr('class','active');
+        	autoopen(_index);
+        });
+        function autoopen(num){
+	        $(".l-pic-index").animate({'left':'-37px','top':'-47px'},3100);
+	        $(".r-pic-index").animate({'right':'-37px','top':'-47px'},3100);
+	        $(".l-bg-index").animate({'width':'600px','left':'0'},3000);
+	        $(".r-bg-index").animate({'width':'600px','right':'0'},3000,function(){
+	        	$('.webpage').css('opacity',1);
+	        	bigGlass('#webpage'+num,'#retina'+num);
+	
+          });
+        	
+        };
+        
+
+        
+          
+          
+        
+    });
+</script>
+<script type="text/javascript" src="js/script.js"></script>
+
+</body>
+</html>
